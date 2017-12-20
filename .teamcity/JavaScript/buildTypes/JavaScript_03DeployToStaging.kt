@@ -1,6 +1,7 @@
 package JavaScript.buildTypes
 
 import jetbrains.buildServer.configs.kotlin.v10.*
+import jetbrains.buildServer.configs.kotlin.v10.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.v10.triggers.vcs
 
 object JavaScript_03DeployToStaging : BuildType({
@@ -11,6 +12,16 @@ object JavaScript_03DeployToStaging : BuildType({
     vcs {
         root(JavaScript.vcsRoots.JavaScript_HttpsGithubComAlexanderKapelyukhovskiyTeamcityCourseCards)
 
+    }
+    steps {
+        script {
+            name = "IIE Deploy"
+            id = "RUNNER_6"
+            scriptContent = """
+                rmdir /S /Q \inetpub\wwwroot
+                xcopy /S /I /Y app \inetpub\wwwroot\
+            """
+        }
     }
 
     dependencies {
